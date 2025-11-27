@@ -1,0 +1,47 @@
+# Build results
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+
+# Visual Studio cache/options
+.vs/
+.vscode/
+*.user
+*.suo
+*.cache
+*.vsix
+
+# Rider IDE
+.idea/
+*.sln.iml
+
+# NuGet
+*.nupkg
+*.nupkg.sha512
+.nuget/
+
+# Build output
+*.log
+log.txt
+
+# Database files
+*.db
+*.db-shm
+*.db-wal
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE generated files
+*.GeneratedMSBuildEditorConfig.editorconfig
+*.csproj.FileListAbsolute.txt
+
+# Package files
+*.deps.json
+project.assets.json
+project.nuget.cache
+project.packagespec.json
+*.nuget.dgspec.json

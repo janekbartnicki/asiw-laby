@@ -1,0 +1,384 @@
+@use 'sass:color';
+
+$color-bg-primary: #FDFCF9;
+$color-bg-secondary: #F4F5F7;
+$color-border-light: #E7E7E2;
+
+$color-text-primary: #171A21;
+$color-text-secondary: #596172;
+
+$color-accent-primary: #1C3F71;
+
+$color-status-success: #3D9970;
+$color-status-error: #CC3333;
+$color-status-info: #0074D9;
+
+$font-size-base: 1rem;
+$font-size-small: 0.875rem;
+$font-size-large: 1.125rem;
+
+$font-size-h6: 1rem;
+$font-size-h5: 1.25rem;
+$font-size-h4: 1.5rem;
+$font-size-h3: 1.75rem;
+$font-size-h2: 2.25rem;
+$font-size-h1: 3rem;
+
+body {
+  padding: 0;
+  margin: 0;
+  color: $color-text-primary;
+  background-color: $color-bg-primary;
+  font-family: Arial, sans-serif;
+  height: 100vh;
+  width: 100vw;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+#root {
+  height: 100vh;
+  width: 100vw;
+
+  display: flex;
+  flex-direction: column;
+  // overflow-x: hidden;
+
+  .navbar-container {
+    flex: 0;
+    width: 100%;
+    height: fit-content;
+  }
+
+  > :not(.navbar-container) {
+    flex: 1;
+  }
+}
+
+.icon {
+  height: 20px;
+  width: 20px;
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(0) saturate(100%) invert(19%) sepia(60%) saturate(1190%) hue-rotate(184deg) brightness(93%) contrast(89%);
+  }
+}
+
+button {
+  font-family: inherit;
+  background-color: $color-accent-primary;
+  padding: 1rem 1.5rem;
+  color: $color-bg-primary;
+  font-size: $font-size-base;
+  cursor: pointer;
+
+  &:hover {
+    background-color: color.adjust($color-accent-primary, $lightness: -10%);
+  }
+
+  &:disabled {
+    background-color: color.adjust($color-accent-primary, $lightness: -10%);
+    cursor: not-allowed;
+  }
+}
+
+.loader-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader {
+  width: 25px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 6px solid;
+  border-color: $color-accent-primary #0000;
+  animation: l1 1s infinite;
+}
+
+@keyframes l1 {to{transform: rotate(.5turn)}}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.primary-btn {
+  padding: 0.75rem 1.5rem;
+  font-size: $font-size-base;
+  color: $color-bg-primary;
+  background-color: $color-accent-primary;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: color.adjust($color-accent-primary, $lightness: -10%);
+  }
+}
+
+// === NAVBAR ===
+
+.navbar-container {
+  position: sticky;
+  top: 0;
+  background-color: $color-bg-secondary;
+  border-bottom: 1px solid $color-border-light;
+  box-shadow: 0 2px 24px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: $font-size-h5;
+
+  ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+
+    .selected {
+      background-color: $color-accent-primary;
+
+      li {
+        color: $color-bg-primary;
+      }
+    }
+
+    li {
+      cursor: pointer;
+      color: $color-accent-primary;
+      padding: 1rem 2rem;
+    }
+  }
+}
+
+// === HOME PAGE ===
+
+.homepage-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+
+  h1 {
+    font-size: $font-size-h2;
+    margin-bottom: 1rem;
+  }
+}
+
+// === CAR LIST ===
+
+.cars-list-container {
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  .cars-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .cars-list-element {
+      width: 100%;
+      padding: 4rem;
+      border-bottom: 1px solid $color-border-light;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      &:hover {
+        background-color: $color-bg-secondary;
+        cursor: pointer;
+      }
+
+      .options {
+        display: flex;
+        gap: 1rem;
+      }
+    }
+  }
+}
+
+// === CAR DETAILS ===
+
+.car-details-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+
+  .car-title {
+    width: 100%;
+    flex: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1rem;
+    background-color: $color-accent-primary;
+    padding: 1rem 2rem;
+
+    .title {
+      color: $color-bg-primary;
+      margin: 0;
+      padding: 0;
+    }
+
+    .year {
+      margin: 0;
+      padding: 0;
+      color: $color-bg-secondary;
+    }
+  }
+  
+  .car-info-container {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    width: 100%;
+    padding-top: 3rem;
+
+    .car-photo {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+
+      .loader {
+        margin-top: calc(100% / 6);
+      }
+
+      img {
+        padding: 2rem;
+        max-width: 100%;
+        height: auto;
+        padding: 3rem;
+        border: solid 4px $color-accent-primary;
+      }
+    }
+
+    .car-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+
+      .title {
+        margin: 0;
+      }
+
+      p.list-header {
+        margin: 0;
+        padding: 0;
+        font-size: $font-size-large;
+      }
+
+      ul {
+        margin: 0;
+
+        li {
+          margin-bottom: 0.5rem;
+          list-style-type: square;
+          list-style-position: outside;
+          padding-left: 1rem;
+
+
+          &::marker {
+            color: $color-accent-primary;
+          }
+
+          span {
+            font-weight: bold;
+          }
+        }
+      }
+    }
+  }
+}
+
+// === CAR EDIT ===
+
+.form-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 4.5rem;
+
+  .error-message {
+    position: fixed;
+    width: cacl(100vw - 6vw);
+    bottom: 5vh;
+    left: 3vw;
+    right: 3vw;
+    background-color: $color-status-error;
+    padding: 1rem;
+    color: $color-bg-primary;
+    display: flex;
+    justify-content: space-between;
+
+    p {
+      margin: 0;
+      padding: 0;
+    
+      &::after {
+        content: ".";
+      }
+    }
+
+    .error-icon {
+      filter: brightness(0) saturate(100%) invert(93%) sepia(1%) saturate(723%) hue-rotate(358deg) brightness(107%) contrast(98%);
+      opacity: .5;
+    }
+  }
+}
+
+// === FORM STYLES ===
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  width: 60vh;
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+  }
+
+  label {
+    font-weight: bold;
+  }
+
+  input, select, textarea {
+    padding: 0.75rem;
+    font-size: $font-size-base;
+    border: 1px solid $color-border-light;
+    border-radius: 4px;
+
+    &:focus {
+      outline: none;
+      border-color: $color-accent-primary;
+      // box-shadow: 0 0 0 2px color.adjust($color-accent-primary, $alpha: -70%);
+    }
+  }
+
+  .spacer {
+    height: 2rem;
+  }
+}
