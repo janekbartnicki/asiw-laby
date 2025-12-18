@@ -1,22 +1,26 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { BodyType, FuelType, type Car } from "../types/car";
+import { useAuth } from "../hooks/useAuth";
+import { useApiCall } from "../utils/api";
 
 export default function CarDetails() {
     const { id } = useParams<{ id: string }>();
     const [car, setCar] = useState<Car | null>(null);
+    const { token } = useAuth();
+    const { fetchWithAuth } = useApiCall();
 
     useEffect(() => {
         (async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/cars/${id}`);
+                const response = await fetchWithAuth(`http://localhost:5000/api/cars/${id}`, token);
                 const data = await response.json();
                 setCar(data);
             } catch (error) {
                 console.error('Error fetching car details:', error);
             }
         })();
-    }, [id]);
+    }, [id, token, fetchWithAuth]);
 
     return (
         <div className="car-details-container">

@@ -1,30 +1,34 @@
 import { useEffect, useState } from "react"
 import type { Car } from "../types/car";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+import { useApiCall } from "../utils/api";
 
 export default function CarsList() {
     const navigate = useNavigate();
+    const { token } = useAuth();
+    const { fetchWithAuth } = useApiCall();
     const [cars, setCars] = useState<Car[] | null>(null);
 
     useEffect(() => {
         (async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/cars');
+                const response = await fetchWithAuth('http://localhost:5000/api/cars', token);
                 const data = await response.json();
                 setCars(data);
                 console.log('Fetched cars:', data);
             } catch (error) {
-                console.error('Error fetching cars:', error);  
+                console.error('Error fetching cars:', error);
             }
         })();
-    }, []);
+    }, [token, fetchWithAuth]);
 
     const handleCarDelete = async (e: Event, carId: string) => {
         e.preventDefault();
         e.stopPropagation();
 
         try {
-            const response = await fetch(`http://localhost:5000/api/cars/${carId}`, {
+            const response = await fetchWithAuth(`http://localhost:5000/api/cars/${carId}`, token, {
                 method: 'DELETE',
             });
             

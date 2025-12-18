@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import type { Car } from "../types/car";
 import { CarForm } from "./car-form";
+import { useAuth } from "../hooks/useAuth";
+import { useApiCall } from "../utils/api";
 
 function CarEditInner() {
     const { id } = useParams<{ id: string }>();
@@ -10,6 +12,8 @@ function CarEditInner() {
     const [callbackFn, setCallbackFn] = useState<(carData: Car) => void>(() => {});
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const navigate = useNavigate();
+    const { token } = useAuth();
+    const { fetchWithAuth } = useApiCall();
 
     const setErrorMessageReset = () => {
         setTimeout(() => setErrorMessage(null), 3000);
@@ -25,7 +29,7 @@ function CarEditInner() {
         return true;
     }
 
-    const carCreateCallbackFn = async (carData: Partial<Car>) => {
+    const carCreateCallbackFn = useCallback(async (carData: Partial<Car>) => {
         console.log('Creating car:', carData);
         delete carData.id;
         setErrorMessage(null);
@@ -33,7 +37,7 @@ function CarEditInner() {
         if (!validation(carData)) return;
 
         try {
-            const response = await fetch('http://localhost:5000/api/cars', {
+            const response = await fetchWithAuth('http://localhost:5000/api/cars', token, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -54,9 +58,9 @@ function CarEditInner() {
             setErrorMessage(`Error creating car: ${error}`);
             setErrorMessageReset();
         }
-    }
+    }, [fetchWithAuth, token, navigate]);
 
-    const carEditCallbackFn = async (carData: Partial<Car>) => {
+    const carEditCallbackFn = useCallback(async (carData: Partial<Car>) => {
         console.log('Editing car:', carData);
         const id = carData.id;
         delete carData.id;
@@ -65,7 +69,7 @@ function CarEditInner() {
         if (!validation(carData)) return;
 
         try {
-            const response = await fetch(`http://localhost:5000/api/cars/${id}`, {
+            const response = await fetchWithAuth(`http://localhost:5000/api/cars/${id}`, token, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -86,7 +90,7 @@ function CarEditInner() {
             setErrorMessage(`Error updating car: ${error}`);
             setErrorMessageReset();
         }
-    }
+    }, [fetchWithAuth, token, navigate]);
 
     useEffect(() => {
         (async () => {
@@ -95,7 +99,7 @@ function CarEditInner() {
             
             if (id && id !== 'new') {
                 try {
-                    const response = await fetch(`http://localhost:5000/api/cars/${id}`);
+                    const response = await fetchWithAuth(`http://localhost:5000/api/cars/${id}`, token);
                     const carData = await response.json();
                     setCar(carData);
                     setCallbackFn(() => carEditCallbackFn);
